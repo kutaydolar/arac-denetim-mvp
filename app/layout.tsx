@@ -1,10 +1,4 @@
 import "./globals.css";
-import dynamic from "next/dynamic";
-
-const ServiceWorkerRegister = dynamic(
-  () => import("../components/ServiceWorkerRegister"),
-  { ssr: false }
-);
 
 export const metadata = {
   title: "Araç Denetim",
@@ -28,7 +22,6 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
       </head>
       <body>
-        <ServiceWorkerRegister />
         {children}
       </body>
     </html>
