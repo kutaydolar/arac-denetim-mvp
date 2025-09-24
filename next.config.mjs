@@ -19,14 +19,3 @@ export default isStackBlitz
       swSrc: "app/sw.ts",
       swDest: "public/sw.js",
     })(nextConfig);
-  process.env.HOSTNAME?.includes('credentialless') ||
-  process.env.DISABLE_SERWIST === 'true'
-);
-
-// Conditionally apply Serwist plugin
-export default isStackBlitz 
-  ? nextConfig 
-  : withSerwist({
-      swSrc: "app/sw.ts",
-      swDest: "public/sw.js",
-    })(nextConfig);
