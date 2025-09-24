@@ -1,7 +1,12 @@
 "use client";
 import { useState } from "react";
 
-export default function WelcomeScreen({ onStart }: { onStart: () => void }) {
+interface WelcomeScreenProps {
+  onStart: () => void;
+  onShowHistory?: () => void;
+}
+
+export default function WelcomeScreen({ onStart, onShowHistory }: WelcomeScreenProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleStart = () => {
@@ -16,7 +21,7 @@ export default function WelcomeScreen({ onStart }: { onStart: () => void }) {
       <div className="oregon-card max-w-md w-full p-8 text-center">
         {/* Oregon Keep Moving Image */}
         <div className="mb-8">
-          <div className="w-full h-48 bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl flex items-center justify-center mb-6 keep-moving-animation">
+          <div className="w-full h-48 bg-gradient-to-r from-oregon-blue to-oregon-light-blue rounded-xl flex items-center justify-center mb-6 keep-moving-animation">
             <div className="text-center text-white">
               <div className="text-4xl font-bold mb-2">OREGON</div>
               <div className="text-xl font-light tracking-wider">KEEP MOVING</div>
@@ -39,8 +44,17 @@ export default function WelcomeScreen({ onStart }: { onStart: () => void }) {
             disabled={isLoading}
             className={`w-full oregon-button-primary ${isLoading ? 'oregon-loading' : ''}`}
           >
-            {isLoading ? 'Yükleniyor...' : 'Kontrole Başla'}
+            {isLoading ? 'Yükleniyor...' : 'Yeni Kontrol Başlat'}
           </button>
+
+          {onShowHistory && (
+            <button
+              onClick={onShowHistory}
+              className="w-full oregon-button-secondary"
+            >
+              📋 Kayıtlı Formlarım
+            </button>
+          )}
           
           <div className="text-xs text-gray-500 mt-4">
             Oregon Lojistik © 2025 - Tüm hakları saklıdır

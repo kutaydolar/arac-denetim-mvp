@@ -1,7 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import SignatureCanvas from "react-signature-canvas";
 
-export default function Step3Checklist({ data, setData, back }: any) {
+interface Step3Props {
+  data: any;
+  setData: (data: any) => void;
+  back: () => void;
+  onComplete: () => void;
+  isCompleting: boolean;
+}
+
+export default function Step3Checklist({ data, setData, back, onComplete, isCompleting }: Step3Props) {
   // Fiziki Kontrol Satırları
   const fizikiRows = [
     "Genel fiziki sağlamlığı ve bütünlüğü",
@@ -51,13 +59,12 @@ export default function Step3Checklist({ data, setData, back }: any) {
   const sigRef = useRef<SignatureCanvas>(null);
   const [imzaData, setImzaData] = useState<string>(data.kontrolEdenImza || "");
   const [errors, setErrors] = useState<string[]>([]);
-  const [showSuccess, setShowSuccess] = useState(false);
 
   // Tarih & Saat
   const [timestamp, setTimestamp] = useState("");
   useEffect(() => {
     const now = new Date();
-    setTimestamp(now.toLocaleString());
+    setTimestamp(now.toLocaleString('tr-TR'));
   }, []);
 
   // Fiziki kontrol için hepsi uygun
@@ -121,7 +128,7 @@ export default function Step3Checklist({ data, setData, back }: any) {
       return;
     }
 
-    // Veriyi kaydet
+    // Veriyi kaydet ve tamamla
     setData({
       ...data,
       fizikiKontrol: fiziki,
@@ -134,10 +141,8 @@ export default function Step3Checklist({ data, setData, back }: any) {
       timestamp
     });
 
-    setShowSuccess(true);
-    setTimeout(() => {
-      alert("Form başarıyla tamamlandı! PDF oluşturma özelliği yakında eklenecek.");
-    }, 1000);
+    // Form tamamlama işlemini başlat
+    onComplete();
   };
 
   // Kontrol satırı bileşeni
@@ -215,23 +220,6 @@ export default function Step3Checklist({ data, setData, back }: any) {
       </tr>
     );
   };
-
-  if (showSuccess) {
-    return (
-      <div className="oregon-card p-8 mt-6 text-center">
-        <div className="oregon-success rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-          <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-          </svg>
-        </div>
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Form Başarıyla Tamamlandı!</h2>
-        <p className="text-gray-600 mb-6">Araç güvenlik kontrol formu başarıyla kaydedildi.</p>
-        <div className="text-sm text-gray-500">
-          Oregon Lojistik © 2025
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-6 mt-6">
@@ -433,14 +421,18 @@ export default function Step3Checklist({ data, setData, back }: any) {
           <button 
             onClick={back} 
             className="oregon-button-secondary px-6 py-3"
+            disabled={isCompleting}
           >
             ← Geri
           </button>
           <button 
             onClick={handleComplete} 
-            className="oregon-success px-6 py-3 rounded-lg font-semibold"
+            className={`oregon-success px-6 py-3 rounded-lg font-semibold ${
+              isCompleting ? 'oregon-loading' : ''
+            }`}
+            disabled={isCompleting}
           >
-            Formu Tamamla ✓
+            {isCompleting ? 'PDF Oluşturuluyor...' : 'Formu Tamamla ✓'}
           </button>
         </div>
       </div>

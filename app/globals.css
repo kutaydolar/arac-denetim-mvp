@@ -191,7 +191,7 @@ body {
 
 /* Loading States */
 .oregon-loading {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg, var(--oregon-light-blue) 25%, var(--oregon-blue) 50%, var(--oregon-light-blue) 75%);
   background-size: 200% 100%;
   animation: loading 1.5s infinite;
 }

@@ -1,7 +1,14 @@
 "use client";
 import { useState } from "react";
 
-export default function Step1VehicleInfo({ data, setData, next }: any) {
+interface Step1Props {
+  data: any;
+  setData: (data: any) => void;
+  next: () => void;
+  onBack?: () => void;
+}
+
+export default function Step1VehicleInfo({ data, setData, next, onBack }: Step1Props) {
   const [tasiyici, setTasiyici] = useState(data?.tasiyiciFirma || "");
   const [aracTuru, setAracTuru] = useState(data?.aracTuru || "");
   const [sevk, setSevk] = useState(data?.sevkDurumu || "");
@@ -14,6 +21,22 @@ export default function Step1VehicleInfo({ data, setData, next }: any) {
       setAracTuru(""); // Seçimi kaldır
     } else {
       setAracTuru(tur);
+    }
+  };
+
+  const handleSevkSelect = (durum: string) => {
+    if (sevk === durum) {
+      setSevk(""); // Seçimi kaldır
+    } else {
+      setSevk(durum);
+    }
+  };
+
+  const handleMuhurSelect = (durum: string) => {
+    if (muhur === durum) {
+      setMuhur(""); // Seçimi kaldır
+    } else {
+      setMuhur(durum);
     }
   };
 
@@ -96,7 +119,7 @@ export default function Step1VehicleInfo({ data, setData, next }: any) {
                 <div className="flex items-center justify-center space-x-3">
                   <div className={`
                     w-5 h-5 rounded border-2 flex items-center justify-center transition-all
-                    ${aracTuru === tur ? 'border-blue-600 bg-blue-600' : 'border-gray-400'}
+                    ${aracTuru === tur ? 'border-oregon-blue bg-oregon-blue' : 'border-gray-400'}
                   `}>
                     {aracTuru === tur && (
                       <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -119,26 +142,26 @@ export default function Step1VehicleInfo({ data, setData, next }: any) {
           <div className="grid grid-cols-2 gap-4">
             <div 
               className={`oregon-radio-card ${sevk === "Evet" ? 'selected' : ''}`}
-              onClick={() => setSevk(sevk === "Evet" ? "" : "Evet")}
+              onClick={() => handleSevkSelect("Evet")}
             >
               <div className="flex items-center justify-center space-x-3">
                 <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                  sevk === "Evet" ? 'border-blue-600' : 'border-gray-400'
+                  sevk === "Evet" ? 'border-oregon-blue' : 'border-gray-400'
                 }`}>
-                  {sevk === "Evet" && <div className="w-2 h-2 rounded-full bg-blue-600"></div>}
+                  {sevk === "Evet" && <div className="w-2 h-2 rounded-full bg-oregon-blue"></div>}
                 </div>
                 <span className="font-medium">Evet</span>
               </div>
             </div>
             <div 
               className={`oregon-radio-card ${sevk === "Hayır" ? 'selected' : ''}`}
-              onClick={() => setSevk(sevk === "Hayır" ? "" : "Hayır")}
+              onClick={() => handleSevkSelect("Hayır")}
             >
               <div className="flex items-center justify-center space-x-3">
                 <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                  sevk === "Hayır" ? 'border-blue-600' : 'border-gray-400'
+                  sevk === "Hayır" ? 'border-oregon-blue' : 'border-gray-400'
                 }`}>
-                  {sevk === "Hayır" && <div className="w-2 h-2 rounded-full bg-blue-600"></div>}
+                  {sevk === "Hayır" && <div className="w-2 h-2 rounded-full bg-oregon-blue"></div>}
                 </div>
                 <span className="font-medium">Hayır</span>
               </div>
@@ -154,26 +177,26 @@ export default function Step1VehicleInfo({ data, setData, next }: any) {
           <div className="grid grid-cols-2 gap-4">
             <div 
               className={`oregon-radio-card ${muhur === "Evet" ? 'selected' : ''}`}
-              onClick={() => setMuhur(muhur === "Evet" ? "" : "Evet")}
+              onClick={() => handleMuhurSelect("Evet")}
             >
               <div className="flex items-center justify-center space-x-3">
                 <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                  muhur === "Evet" ? 'border-blue-600' : 'border-gray-400'
+                  muhur === "Evet" ? 'border-oregon-blue' : 'border-gray-400'
                 }`}>
-                  {muhur === "Evet" && <div className="w-2 h-2 rounded-full bg-blue-600"></div>}
+                  {muhur === "Evet" && <div className="w-2 h-2 rounded-full bg-oregon-blue"></div>}
                 </div>
                 <span className="font-medium">Evet</span>
               </div>
             </div>
             <div 
               className={`oregon-radio-card ${muhur === "Hayır" ? 'selected' : ''}`}
-              onClick={() => setMuhur(muhur === "Hayır" ? "" : "Hayır")}
+              onClick={() => handleMuhurSelect("Hayır")}
             >
               <div className="flex items-center justify-center space-x-3">
                 <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                  muhur === "Hayır" ? 'border-blue-600' : 'border-gray-400'
+                  muhur === "Hayır" ? 'border-oregon-blue' : 'border-gray-400'
                 }`}>
-                  {muhur === "Hayır" && <div className="w-2 h-2 rounded-full bg-blue-600"></div>}
+                  {muhur === "Hayır" && <div className="w-2 h-2 rounded-full bg-oregon-blue"></div>}
                 </div>
                 <span className="font-medium">Hayır</span>
               </div>
@@ -196,12 +219,22 @@ export default function Step1VehicleInfo({ data, setData, next }: any) {
           </select>
         </div>
 
-        <button 
-          onClick={handleNext} 
-          className="w-full oregon-button-primary text-lg py-4 mt-8"
-        >
-          Devam Et →
-        </button>
+        <div className="flex justify-between mt-8">
+          {onBack && (
+            <button 
+              onClick={onBack} 
+              className="oregon-button-secondary px-6 py-3"
+            >
+              ← Ana Sayfa
+            </button>
+          )}
+          <button 
+            onClick={handleNext} 
+            className="w-full oregon-button-primary text-lg py-4 mt-8"
+          >
+            Devam Et →
+          </button>
+        </div>
       </div>
     </div>
   );
