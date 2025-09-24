@@ -1,13 +1,27 @@
 {
-  "name": "Ara� Denetim",
-  "short_name": "Denetim",
+  "name": "Araç Denetim Uygulaması",
+  "short_name": "Araç Denetim",
+  "description": "Araç güvenlik kontrol formu - dijital denetim uygulaması",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#2563eb",
-  "orientation": "portrait",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
   "icons": [
-    { "src": "/icons/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/icons/icon-512x512.png", "sizes": "512x512", "type": "image/png" }
-  ]
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "lang": "tr",
+  "dir": "ltr"
 }
