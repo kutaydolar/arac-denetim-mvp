@@ -4,6 +4,11 @@ import { useEffect } from 'react';
 
 export default function ServiceWorkerRegister() {
   useEffect(() => {
+    // Check build-time environment variable first
+    if (process.env.NEXT_PUBLIC_IS_STACKBLITZ === 'true') {
+      return;
+    }
+
     // More comprehensive check for StackBlitz and unsupported environments
     const isStackBlitz = typeof window !== 'undefined' && 
       (window.location.hostname.includes('stackblitz') || 
