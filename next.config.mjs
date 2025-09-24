@@ -1,8 +1,20 @@
-import type { NextConfig } from "next";
 import withSerwist from "@serwist/next";
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   reactStrictMode: true,
+  webpack: (config, { isServer }) => {
+    // Ensure CSS files are handled correctly
+    config.module.rules.push({
+      test: /\.css$/,
+      use: [
+        'style-loader',
+        'css-loader',
+        'postcss-loader'
+      ]
+    });
+    
+    return config;
+  }
 };
 
 export default withSerwist({
