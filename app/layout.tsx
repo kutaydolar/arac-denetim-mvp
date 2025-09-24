@@ -1,4 +1,5 @@
 import "./globals.css";
+import ServiceWorkerRegister from "../components/ServiceWorkerRegister";
 
 export const metadata = {
   title: "Araç Denetim",
@@ -22,6 +23,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
       </head>
       <body>
+        <ServiceWorkerRegister />
         {children}
       </body>
     </html>
