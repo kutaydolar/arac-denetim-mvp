@@ -109,46 +109,32 @@ export default function Step1VehicleInfo({ data, setData, next }: any) {
       <div>
         <label className="block text-sm font-medium mb-3">Araç farklı bir gümrükten sevkli mi geldi?</label>
         <div className="flex gap-4">
-          <label 
+          <div 
             className={`flex items-center space-x-2 cursor-pointer p-3 rounded-lg border ${
               sevk === "Evet" ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
             }`}
             onClick={() => setSevk(sevk === "Evet" ? "" : "Evet")}
           >
-            <input 
-              type="radio" 
-              value="Evet" 
-              checked={sevk === "Evet"} 
-              onChange={() => {}} 
-              className="sr-only"
-            />
             <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
               sevk === "Evet" ? 'border-blue-500' : 'border-gray-400'
             }`}>
               {sevk === "Evet" && <div className="w-2 h-2 rounded-full bg-blue-500"></div>}
             </div>
             <span>Evet</span>
-          </label>
-          <label 
+          </div>
+          <div 
             className={`flex items-center space-x-2 cursor-pointer p-3 rounded-lg border ${
               sevk === "Hayır" ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
             }`}
             onClick={() => setSevk(sevk === "Hayır" ? "" : "Hayır")}
           >
-            <input 
-              type="radio" 
-              value="Hayır" 
-              checked={sevk === "Hayır"} 
-              onChange={() => {}} 
-              className="sr-only"
-            />
             <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
               sevk === "Hayır" ? 'border-blue-500' : 'border-gray-400'
             }`}>
               {sevk === "Hayır" && <div className="w-2 h-2 rounded-full bg-blue-500"></div>}
             </div>
             <span>Hayır</span>
-          </label>
+          </div>
         </div>
       </div>
 
@@ -156,46 +142,32 @@ export default function Step1VehicleInfo({ data, setData, next }: any) {
       <div>
         <label className="block text-sm font-medium mb-3">Araç mühürlü mü geldi?</label>
         <div className="flex gap-4">
-          <label 
+          <div 
             className={`flex items-center space-x-2 cursor-pointer p-3 rounded-lg border ${
               muhur === "Evet" ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
             }`}
             onClick={() => setMuhur(muhur === "Evet" ? "" : "Evet")}
           >
-            <input 
-              type="radio" 
-              value="Evet" 
-              checked={muhur === "Evet"} 
-              onChange={() => {}} 
-              className="sr-only"
-            />
             <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
               muhur === "Evet" ? 'border-blue-500' : 'border-gray-400'
             }`}>
               {muhur === "Evet" && <div className="w-2 h-2 rounded-full bg-blue-500"></div>}
             </div>
             <span>Evet</span>
-          </label>
-          <label 
+          </div>
+          <div 
             className={`flex items-center space-x-2 cursor-pointer p-3 rounded-lg border ${
               muhur === "Hayır" ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
             }`}
             onClick={() => setMuhur(muhur === "Hayır" ? "" : "Hayır")}
           >
-            <input 
-              type="radio" 
-              value="Hayır" 
-              checked={muhur === "Hayır"} 
-              onChange={() => {}} 
-              className="sr-only"
-            />
             <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
               muhur === "Hayır" ? 'border-blue-500' : 'border-gray-400'
             }`}>
               {muhur === "Hayır" && <div className="w-2 h-2 rounded-full bg-blue-500"></div>}
             </div>
             <span>Hayır</span>
-          </label>
+          </div>
         </div>
       </div>
 
