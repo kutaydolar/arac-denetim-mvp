@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
-    "@tailwindcss/postcss": "^4.1.13",
     "classnames": "^2.5.1",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.3",
