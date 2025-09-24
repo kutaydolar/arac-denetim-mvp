@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import SignatureCanvas from "react-signature-canvas";
 
-export default function Step3Checklist({ data, setData, next, back }: any) {
+export default function Step3Checklist({ data, setData, back }: any) {
   // Fiziki Kontrol Satırları
   const fizikiRows = [
     "Genel fiziki sağlamlığı ve bütünlüğü",
@@ -51,6 +51,7 @@ export default function Step3Checklist({ data, setData, next, back }: any) {
   const sigRef = useRef<SignatureCanvas>(null);
   const [imzaData, setImzaData] = useState<string>(data.kontrolEdenImza || "");
   const [errors, setErrors] = useState<string[]>([]);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   // Tarih & Saat
   const [timestamp, setTimestamp] = useState("");
@@ -95,97 +96,8 @@ export default function Step3Checklist({ data, setData, next, back }: any) {
     }
   };
 
-  // Kontrol satırı bileşeni
-  const ControlRow = ({ 
-    value, 
-    onChange, 
-    aciklama, 
-    onAciklamaChange, 
-    label, 
-    index 
-  }: {
-    value: string | null;
-    onChange: (val: string | null) => void;
-    aciklama: string;
-    onAciklamaChange: (val: string) => void;
-    label: string;
-    index: number;
-  }) => {
-    const handleRadioClick = (newValue: string) => {
-      if (value === newValue) {
-        onChange(null); // Seçimi kaldır
-      } else {
-        onChange(newValue);
-      }
-    };
-
-    return (
-      <tr>
-        <td className="border p-3 text-sm">{label}</td>
-        <td className="border p-3 text-center">
-          <label 
-            className={`cursor-pointer p-2 rounded ${
-              value === "uygun" ? 'bg-green-100' : ''
-            }`}
-            onClick={() => handleRadioClick("uygun")}
-          >
-            <input
-              type="radio"
-              name={`control_${index}`}
-              checked={value === "uygun"}
-              onChange={() => {}}
-              className="sr-only"
-            />
-            <div className={`w-5 h-5 rounded border-2 mx-auto flex items-center justify-center ${
-              value === "uygun" ? 'border-green-500 bg-green-500' : 'border-gray-400'
-            }`}>
-              {value === "uygun" && (
-                <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-              )}
-            </div>
-          </label>
-        </td>
-        <td className="border p-3 text-center">
-          <label 
-            className={`cursor-pointer p-2 rounded ${
-              value === "uygunsuz" ? 'bg-red-100' : ''
-            }`}
-            onClick={() => handleRadioClick("uygunsuz")}
-          >
-            <input
-              type="radio"
-              name={`control_${index}`}
-              checked={value === "uygunsuz"}
-              onChange={() => {}}
-              className="sr-only"
-            />
-            <div className={`w-5 h-5 rounded border-2 mx-auto flex items-center justify-center ${
-              value === "uygunsuz" ? 'border-red-500 bg-red-500' : 'border-gray-400'
-            }`}>
-              {value === "uygunsuz" && (
-                <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-              )}
-            </div>
-          </label>
-        </td>
-        <td className="border p-3">
-          <input 
-            type="text" 
-            className="border border-gray-300 w-full p-2 rounded focus:ring-2 focus:ring-blue-500" 
-            placeholder="Açıklama" 
-            value={aciklama}
-            onChange={(e) => onAciklamaChange(e.target.value)}
-          />
-        </td>
-      </tr>
-    );
-  };
-
-  const handleNext = () => {
+  // Form tamamla
+  const handleComplete = () => {
     const newErrors: string[] = [];
 
     // Fiziki kontrol zorunlu
@@ -222,223 +134,315 @@ export default function Step3Checklist({ data, setData, next, back }: any) {
       timestamp
     });
 
-    next();
+    setShowSuccess(true);
+    setTimeout(() => {
+      alert("Form başarıyla tamamlandı! PDF oluşturma özelliği yakında eklenecek.");
+    }, 1000);
   };
 
+  // Kontrol satırı bileşeni
+  const ControlRow = ({ 
+    value, 
+    onChange, 
+    aciklama, 
+    onAciklamaChange, 
+    label, 
+    index 
+  }: {
+    value: string | null;
+    onChange: (val: string | null) => void;
+    aciklama: string;
+    onAciklamaChange: (val: string) => void;
+    label: string;
+    index: number;
+  }) => {
+    const handleRadioClick = (newValue: string) => {
+      if (value === newValue) {
+        onChange(null); // Seçimi kaldır
+      } else {
+        onChange(newValue);
+      }
+    };
+
+    return (
+      <tr className="hover:bg-blue-50/30 transition-colors">
+        <td className="border border-gray-200 p-4 text-sm font-medium text-gray-700">{label}</td>
+        <td className="border border-gray-200 p-4 text-center">
+          <div 
+            className={`cursor-pointer p-2 rounded-lg transition-all ${
+              value === "uygun" ? 'bg-green-100 border-2 border-green-500' : 'hover:bg-green-50'
+            }`}
+            onClick={() => handleRadioClick("uygun")}
+          >
+            <div className={`w-6 h-6 rounded border-2 mx-auto flex items-center justify-center ${
+              value === "uygun" ? 'border-green-500 bg-green-500' : 'border-gray-400'
+            }`}>
+              {value === "uygun" && (
+                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+              )}
+            </div>
+          </div>
+        </td>
+        <td className="border border-gray-200 p-4 text-center">
+          <div 
+            className={`cursor-pointer p-2 rounded-lg transition-all ${
+              value === "uygunsuz" ? 'bg-red-100 border-2 border-red-500' : 'hover:bg-red-50'
+            }`}
+            onClick={() => handleRadioClick("uygunsuz")}
+          >
+            <div className={`w-6 h-6 rounded border-2 mx-auto flex items-center justify-center ${
+              value === "uygunsuz" ? 'border-red-500 bg-red-500' : 'border-gray-400'
+            }`}>
+              {value === "uygunsuz" && (
+                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              )}
+            </div>
+          </div>
+        </td>
+        <td className="border border-gray-200 p-4">
+          <input 
+            type="text" 
+            className="oregon-input w-full" 
+            placeholder="Açıklama (opsiyonel)" 
+            value={aciklama}
+            onChange={(e) => onAciklamaChange(e.target.value)}
+          />
+        </td>
+      </tr>
+    );
+  };
+
+  if (showSuccess) {
+    return (
+      <div className="oregon-card p-8 mt-6 text-center">
+        <div className="oregon-success rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
+          <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+          </svg>
+        </div>
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Form Başarıyla Tamamlandı!</h2>
+        <p className="text-gray-600 mb-6">Araç güvenlik kontrol formu başarıyla kaydedildi.</p>
+        <div className="text-sm text-gray-500">
+          Oregon Lojistik © 2025
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="p-4 space-y-6">
-      <h2 className="font-bold text-xl mb-4">Araç Fiziki ve Zula Kontrolü</h2>
-
-      {/* Hata Mesajları */}
-      {errors.length > 0 && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          <ul className="list-disc list-inside">
-            {errors.map((error, index) => (
-              <li key={index}>{error}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {/* Fiziki Kontrol */}
-      <div className="bg-blue-50 p-4 rounded-lg">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="font-bold text-lg">Araç Fiziki Kontrolü</h3>
-          <button 
-            onClick={applyFizikiUygun}
-            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors"
-          >
-            Hepsi Uygun
-          </button>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="table-auto border border-gray-300 w-full bg-white rounded-lg">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="border border-gray-300 p-3 text-left">Kontrol</th>
-                <th className="border border-gray-300 p-3">Uygun ✔</th>
-                <th className="border border-gray-300 p-3">Uygun Değil ✖</th>
-                <th className="border border-gray-300 p-3">Açıklama</th>
-              </tr>
-            </thead>
-            <tbody>
-              {fizikiRows.map((row, idx) => (
-                <ControlRow
-                  key={`fiziki_${idx}`}
-                  value={fiziki[idx]}
-                  onChange={(val) => {
-                    const newFiziki = [...fiziki];
-                    newFiziki[idx] = val;
-                    setFiziki(newFiziki);
-                  }}
-                  aciklama={fizikiAciklama[idx]}
-                  onAciklamaChange={(val) => {
-                    const newAciklama = [...fizikiAciklama];
-                    newAciklama[idx] = val;
-                    setFizikiAciklama(newAciklama);
-                  }}
-                  label={row}
-                  index={idx}
-                />
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Zula Kontrol */}
-      <div className="bg-yellow-50 p-4 rounded-lg">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="font-bold text-lg">Araç Zula Kontrolü</h3>
-          <button 
-            onClick={applyZulaUygun}
-            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors"
-          >
-            Hepsi Uygun
-          </button>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="table-auto border border-gray-300 w-full bg-white rounded-lg">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="border border-gray-300 p-3 text-left">Kontrol</th>
-                <th className="border border-gray-300 p-3">Uygun ✔</th>
-                <th className="border border-gray-300 p-3">Uygun Değil ✖</th>
-                <th className="border border-gray-300 p-3">Açıklama</th>
-              </tr>
-            </thead>
-            <tbody>
-              {zulaRows.map((row, idx) => (
-                <ControlRow
-                  key={`zula_${idx}`}
-                  value={zula[idx]}
-                  onChange={(val) => {
-                    const newZula = [...zula];
-                    newZula[idx] = val;
-                    setZula(newZula);
-                  }}
-                  aciklama={zulaAciklama[idx]}
-                  onAciklamaChange={(val) => {
-                    const newAciklama = [...zulaAciklama];
-                    newAciklama[idx] = val;
-                    setZulaAciklama(newAciklama);
-                  }}
-                  label={row}
-                  index={idx + fizikiRows.length}
-                />
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Genel Sonuç */}
-      <div className="bg-gray-50 p-4 rounded-lg">
-        <h3 className="font-semibold mb-3">Genel Kontrol Sonucu</h3>
-        <div className="flex gap-4 mb-4">
-          <label 
-            className={`flex items-center space-x-2 cursor-pointer p-3 rounded-lg border ${
-              genelSonuc === "uygun" ? 'border-green-500 bg-green-50' : 'border-gray-300'
-            }`}
-            onClick={() => applyGenelSonuc(genelSonuc === "uygun" ? "" : "uygun")}
-          >
-            <input
-              type="radio"
-              checked={genelSonuc === "uygun"}
-              onChange={() => {}}
-              className="sr-only"
-            />
-            <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-              genelSonuc === "uygun" ? 'border-green-500' : 'border-gray-400'
-            }`}>
-              {genelSonuc === "uygun" && <div className="w-2 h-2 rounded-full bg-green-500"></div>}
-            </div>
-            <span>Uygun ✔</span>
-          </label>
-          <label 
-            className={`flex items-center space-x-2 cursor-pointer p-3 rounded-lg border ${
-              genelSonuc === "uygunsuz" ? 'border-red-500 bg-red-50' : 'border-gray-300'
-            }`}
-            onClick={() => setGenelSonuc(genelSonuc === "uygunsuz" ? null : "uygunsuz")}
-          >
-            <input
-              type="radio"
-              checked={genelSonuc === "uygunsuz"}
-              onChange={() => {}}
-              className="sr-only"
-            />
-            <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-              genelSonuc === "uygunsuz" ? 'border-red-500' : 'border-gray-400'
-            }`}>
-              {genelSonuc === "uygunsuz" && <div className="w-2 h-2 rounded-full bg-red-500"></div>}
-            </div>
-            <span>Uygun Değil ✖</span>
-          </label>
-        </div>
-        <button 
-          onClick={handleClear} 
-          className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-lg transition-colors"
-        >
-          Tümünü Temizle
-        </button>
-      </div>
-
-      {/* Kontrolü Gerçekleştiren */}
-      <div className="bg-green-50 p-4 rounded-lg">
-        <h3 className="font-semibold mb-3">Kontrolü Gerçekleştiren</h3>
-        <input
-          className="border border-gray-300 p-3 w-full mb-4 rounded-lg focus:ring-2 focus:ring-blue-500"
-          placeholder="Adı Soyadı"
-          value={adiSoyadi}
-          onChange={(e) => setAdiSoyadi(e.target.value)}
-        />
-        <div className="mb-4">
-          <p className="font-medium mb-2">İmza:</p>
-          <div className="border-2 border-gray-300 rounded-lg bg-white">
-            <SignatureCanvas
-              ref={sigRef}
-              penColor="black"
-              canvasProps={{ width: 600, height: 200, className: "rounded-lg" }}
-            />
+    <div className="space-y-6 mt-6">
+      <div className="oregon-card p-6">
+        <div className="flex items-center mb-6">
+          <div className="w-8 h-8 oregon-gradient rounded-full flex items-center justify-center text-white font-bold mr-3">
+            3
           </div>
-          <div className="mt-3 flex gap-2">
+          <h2 className="text-2xl font-bold text-gray-800">Fiziki ve Zula Kontrolü</h2>
+        </div>
+
+        {/* Hata Mesajları */}
+        {errors.length > 0 && (
+          <div className="oregon-error rounded-lg p-4 mb-6">
+            <div className="font-semibold mb-2">⚠️ Lütfen aşağıdaki alanları kontrol edin:</div>
+            <ul className="list-disc list-inside space-y-1">
+              {errors.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Fiziki Kontrol */}
+        <div className="oregon-card p-4 mb-6">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-bold text-lg text-gray-800">🔧 Araç Fiziki Kontrolü</h3>
             <button 
-              onClick={() => sigRef.current?.clear()} 
-              className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-2 rounded-lg transition-colors"
+              onClick={applyFizikiUygun}
+              className="oregon-button-primary px-4 py-2"
             >
-              Temizle
-            </button>
-            <button 
-              onClick={saveSignature} 
-              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg transition-colors"
-            >
-              Kaydet
+              Hepsi Uygun ✓
             </button>
           </div>
-          {imzaData && (
-            <div className="mt-3">
-              <p className="text-sm text-gray-600 mb-2">Kaydedilen İmza:</p>
-              <img src={imzaData} alt="imza" className="border rounded max-w-xs" />
-            </div>
-          )}
+          <div className="overflow-x-auto">
+            <table className="oregon-table w-full bg-white rounded-lg">
+              <thead>
+                <tr>
+                  <th className="border border-gray-300 p-4 text-left">Kontrol Noktası</th>
+                  <th className="border border-gray-300 p-4">Uygun ✔</th>
+                  <th className="border border-gray-300 p-4">Uygun Değil ✖</th>
+                  <th className="border border-gray-300 p-4">Açıklama</th>
+                </tr>
+              </thead>
+              <tbody>
+                {fizikiRows.map((row, idx) => (
+                  <ControlRow
+                    key={`fiziki_${idx}`}
+                    value={fiziki[idx]}
+                    onChange={(val) => {
+                      const newFiziki = [...fiziki];
+                      newFiziki[idx] = val;
+                      setFiziki(newFiziki);
+                    }}
+                    aciklama={fizikiAciklama[idx]}
+                    onAciklamaChange={(val) => {
+                      const newAciklama = [...fizikiAciklama];
+                      newAciklama[idx] = val;
+                      setFizikiAciklama(newAciklama);
+                    }}
+                    label={row}
+                    index={idx}
+                  />
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-        <p className="text-sm text-gray-600">Tarih & Saat: {timestamp}</p>
-      </div>
 
-      {/* Navigation */}
-      <div className="flex justify-between mt-6">
-        <button 
-          onClick={back} 
-          className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors"
-        >
-          ← Geri
-        </button>
-        <button 
-          onClick={handleNext} 
-          className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors"
-        >
-          İleri →
-        </button>
+        {/* Zula Kontrol */}
+        <div className="oregon-card p-4 mb-6">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-bold text-lg text-gray-800">🔍 Araç Zula Kontrolü</h3>
+            <button 
+              onClick={applyZulaUygun}
+              className="oregon-button-primary px-4 py-2"
+            >
+              Hepsi Uygun ✓
+            </button>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="oregon-table w-full bg-white rounded-lg">
+              <thead>
+                <tr>
+                  <th className="border border-gray-300 p-4 text-left">Kontrol Noktası</th>
+                  <th className="border border-gray-300 p-4">Uygun ✔</th>
+                  <th className="border border-gray-300 p-4">Uygun Değil ✖</th>
+                  <th className="border border-gray-300 p-4">Açıklama</th>
+                </tr>
+              </thead>
+              <tbody>
+                {zulaRows.map((row, idx) => (
+                  <ControlRow
+                    key={`zula_${idx}`}
+                    value={zula[idx]}
+                    onChange={(val) => {
+                      const newZula = [...zula];
+                      newZula[idx] = val;
+                      setZula(newZula);
+                    }}
+                    aciklama={zulaAciklama[idx]}
+                    onAciklamaChange={(val) => {
+                      const newAciklama = [...zulaAciklama];
+                      newAciklama[idx] = val;
+                      setZulaAciklama(newAciklama);
+                    }}
+                    label={row}
+                    index={idx + fizikiRows.length}
+                  />
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Genel Sonuç */}
+        <div className="oregon-card p-4 mb-6">
+          <h3 className="font-semibold text-lg text-gray-800 mb-4">📋 Genel Kontrol Sonucu</h3>
+          <div className="flex gap-4 mb-4">
+            <div 
+              className={`oregon-radio-card flex-1 ${genelSonuc === "uygun" ? 'selected' : ''}`}
+              onClick={() => applyGenelSonuc(genelSonuc === "uygun" ? "" : "uygun")}
+            >
+              <div className="flex items-center justify-center space-x-3">
+                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                  genelSonuc === "uygun" ? 'border-green-500' : 'border-gray-400'
+                }`}>
+                  {genelSonuc === "uygun" && <div className="w-3 h-3 rounded-full bg-green-500"></div>}
+                </div>
+                <span className="font-medium">Uygun ✔</span>
+              </div>
+            </div>
+            <div 
+              className={`oregon-radio-card flex-1 ${genelSonuc === "uygunsuz" ? 'selected' : ''}`}
+              onClick={() => setGenelSonuc(genelSonuc === "uygunsuz" ? null : "uygunsuz")}
+            >
+              <div className="flex items-center justify-center space-x-3">
+                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                  genelSonuc === "uygunsuz" ? 'border-red-500' : 'border-gray-400'
+                }`}>
+                  {genelSonuc === "uygunsuz" && <div className="w-3 h-3 rounded-full bg-red-500"></div>}
+                </div>
+                <span className="font-medium">Uygun Değil ✖</span>
+              </div>
+            </div>
+          </div>
+          <button 
+            onClick={handleClear} 
+            className="oregon-button-secondary px-4 py-2"
+          >
+            Tümünü Temizle
+          </button>
+        </div>
+
+        {/* Kontrolü Gerçekleştiren */}
+        <div className="oregon-card p-4 mb-6">
+          <h3 className="font-semibold text-lg text-gray-800 mb-4">👤 Kontrolü Gerçekleştiren</h3>
+          <input
+            className="oregon-input w-full mb-4"
+            placeholder="Adı Soyadı"
+            value={adiSoyadi}
+            onChange={(e) => setAdiSoyadi(e.target.value)}
+          />
+          <div className="mb-4">
+            <p className="font-medium text-gray-700 mb-2">İmza:</p>
+            <div className="border-2 border-gray-300 rounded-lg bg-white">
+              <SignatureCanvas
+                ref={sigRef}
+                penColor="black"
+                canvasProps={{ width: 600, height: 200, className: "rounded-lg" }}
+              />
+            </div>
+            <div className="mt-3 flex gap-2">
+              <button 
+                onClick={() => sigRef.current?.clear()} 
+                className="oregon-button-secondary px-3 py-2"
+              >
+                Temizle
+              </button>
+              <button 
+                onClick={saveSignature} 
+                className="oregon-button-primary px-3 py-2"
+              >
+                Kaydet
+              </button>
+            </div>
+            {imzaData && (
+              <div className="mt-3">
+                <p className="text-sm text-gray-600 mb-2">Kaydedilen İmza:</p>
+                <img src={imzaData} alt="imza" className="border rounded max-w-xs" />
+              </div>
+            )}
+          </div>
+          <p className="text-sm text-gray-600">📅 Tarih & Saat: {timestamp}</p>
+        </div>
+
+        {/* Navigation */}
+        <div className="flex justify-between mt-8">
+          <button 
+            onClick={back} 
+            className="oregon-button-secondary px-6 py-3"
+          >
+            ← Geri
+          </button>
+          <button 
+            onClick={handleComplete} 
+            className="oregon-success px-6 py-3 rounded-lg font-semibold"
+          >
+            Formu Tamamla ✓
+          </button>
+        </div>
       </div>
     </div>
   );

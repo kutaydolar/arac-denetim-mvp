@@ -1,11 +1,11 @@
 {
-  "name": "Araç Denetim Uygulaması",
-  "short_name": "Araç Denetim",
-  "description": "Araç güvenlik kontrol formu - dijital denetim uygulaması",
+  "name": "Oregon Araç Denetim Sistemi",
+  "short_name": "Oregon Denetim",
+  "description": "Oregon Lojistik - Araç güvenlik kontrol formu dijital sistemi",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#3b82f6",
+  "theme_color": "#1e40af",
   "orientation": "portrait-primary",
   "icons": [
     {
@@ -21,7 +21,22 @@
       "purpose": "maskable any"
     }
   ],
-  "categories": ["business", "productivity"],
+  "categories": ["business", "productivity", "logistics"],
   "lang": "tr",
-  "dir": "ltr"
+  "dir": "ltr",
+  "scope": "/",
+  "screenshots": [
+    {
+      "src": "/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshot-narrow.png", 
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
 }
