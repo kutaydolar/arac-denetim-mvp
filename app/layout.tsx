@@ -1,5 +1,10 @@
 import "./globals.css";
-import ServiceWorkerRegister from "../components/ServiceWorkerRegister";
+import dynamic from "next/dynamic";
+
+const ServiceWorkerRegister = dynamic(
+  () => import("../components/ServiceWorkerRegister"),
+  { ssr: false }
+);
 
 export const metadata = {
   title: "Araç Denetim",
