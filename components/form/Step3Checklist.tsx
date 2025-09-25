@@ -56,7 +56,7 @@ export default function Step3Checklist({ data, setData, back, onComplete, isComp
   );
   const [genelSonuc, setGenelSonuc] = useState<string | null>(data.genelSonuc || null);
   const [adiSoyadi, setAdiSoyadi] = useState(data.kontrolEdenAd || "");
-  const sigRef = useRef<SignatureCanvas>(null);
+  const sigRef = useRef<SignatureCanvas | null>(null);
   const [imzaData, setImzaData] = useState<string>(data.kontrolEdenImza || "");
   const [errors, setErrors] = useState<string[]>([]);
 
